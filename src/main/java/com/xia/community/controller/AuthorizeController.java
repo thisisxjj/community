@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @Slf4j
@@ -22,7 +23,8 @@ public class AuthorizeController {
     private AccessTokenProperties accessTokenProperties;
     @GetMapping("/callback")
     public String callback(@RequestParam("code") String code,
-                           @RequestParam("state") String state) {
+                           @RequestParam("state") String state,
+                           HttpSession session) {
         AccessTokenDTO accessTokenDTO = AccessTokenDTO.builder()
                 .client_id(accessTokenProperties.getClientId())
                 .client_secret(accessTokenProperties.getClientSecret())
@@ -30,9 +32,12 @@ public class AuthorizeController {
                 .code(code)
                 .state(state)
                 .build();
+        // 携带code向access_token接口发送post请求
         String token = gitHubProvider.getAccessToken(accessTokenDTO);
+        // 携带获取的access_token向user接口发送get请求，并获取user对象
         GitHubUser user = gitHubProvider.getGitHubUser(token);
-        log.info("GitHubUser => {}", user.getName());
-        return "index";
+        // 进行存储session存储登录用户信息,登录成功写入user对象，登录失败写入null
+        session.setAttribute("user", user);
+        return "redirect:/";
     }
 }
