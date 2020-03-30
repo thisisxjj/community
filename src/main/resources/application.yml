@@ -2,3 +2,9 @@ github:
   clientId: a2e2d3b76a74c7df85a3
   clientSecret: c01672a3a3aa260a6fa26c91c9b98456143dd2ce
   redirectUri: http://localhost:8080/callback
+spring:
+  datasource:
+    username: root
+    password: qwerty123456
+    url: jdbc:mysql://localhost:3306/community
+    driver-class-name: com.mysql.cj.jdbc.Driver
