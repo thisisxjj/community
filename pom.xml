@@ -80,9 +80,16 @@
 
     <build>
         <plugins>
+            <!-- 管理数据库版本-->
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>6.3.2</version>
+                <configuration>
+                    <url>jdbc:mysql://localhost:3306/community</url>
+                    <user>root</user>
+                    <password>qwerty123456</password>
+                </configuration>
             </plugin>
         </plugins>
     </build>
