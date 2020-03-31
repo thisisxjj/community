@@ -1,0 +1,10 @@
+.main{
+    margin-top: 40px;
+    margin-left: 60px;
+    margin-right: 60px;
+    background-color: white;
+}
+.btn-publish-submit{
+    float: right;
+    margin-bottom: 25px;
+}

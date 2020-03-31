@@ -1,4 +1,4 @@
-package com.xia.community.pojo;
+package com.xia.community.model;
 
 import lombok.Builder;
 import lombok.Data;

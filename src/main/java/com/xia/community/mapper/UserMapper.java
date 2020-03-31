@@ -1,8 +1,7 @@
 package com.xia.community.mapper;
 
-import com.xia.community.pojo.User;
+import com.xia.community.model.User;
 import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 
