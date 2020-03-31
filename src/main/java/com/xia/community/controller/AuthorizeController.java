@@ -35,7 +35,9 @@ public class AuthorizeController {
                 .state(state)
                 .build();
         User user = aOuthService.gitHubAOuth(accessTokenDTO);
-        response.addCookie(new Cookie("token", user.getToken()));
+        if (user != null) {
+            response.addCookie(new Cookie("token", user.getToken()));
+        }
         return "redirect:/";
     }
 }
