@@ -1,8 +1,6 @@
 package com.xia.community.service;
 
-import com.xia.community.dto.QuestionDTO;
-
-import java.util.List;
+import com.xia.community.dto.Pagination;
 
 /**
  * @author thisXjj
@@ -12,6 +10,8 @@ public interface QuestionService {
     /**
      * 展示问题列表
      * @return List<QuestionDTO>
+     * @param pageNum
+     * @param pageSize
      */
-    List<QuestionDTO> list();
+    Pagination list(Integer pageNum, Integer pageSize);
 }

@@ -1,5 +1,6 @@
 package com.xia.community.service.impl;
 
+import com.xia.community.dto.Pagination;
 import com.xia.community.dto.QuestionDTO;
 import com.xia.community.mapper.QuestionMapper;
 import com.xia.community.mapper.UserMapper;
@@ -26,8 +27,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Resource
     private UserMapper userMapper;
     @Override
-    public List<QuestionDTO> list() {
-        List<Question> questionList = questionMapper.list();
+    public Pagination list(Integer pageNum, Integer pageSize) {
+        pageNum = pageNum <= 1 ? 1 : pageNum;
+        Integer totalCount = questionMapper.count();
+        Integer totalPage = totalCount % pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
+        totalPage = totalPage < 1 ? 1 : totalPage;
+        pageNum = pageNum > totalPage ? totalPage : pageNum;
+        // 起始索引
+        Integer offset = (pageNum - 1) * pageSize;
+        List<Question> questionList = questionMapper.list(offset, pageSize);
         // 遍历找出所有问题的创建者的id集合
         Set<Integer> userIdSet = questionList.stream().map(Question::getCreator).collect(Collectors.toSet());
         // 通过id集合，找出所有的user对象
@@ -50,6 +58,8 @@ public class QuestionServiceImpl implements QuestionService {
             // 如果user等于空，则说明question没有创建者，直接返回空
             return null;
         }).collect(Collectors.toList());
+        Pagination pagination = Pagination.builder().questionList(questionDTOList).build();
+        pagination.setPagination(pageNum, pageSize, totalCount, totalPage);
 //        List<QuestionDTO> questionDTOList = new ArrayList<>();
         // 在for循环里面遍历查询数据库，性能低下
 //        for (Question question : questionList) {
@@ -59,6 +69,6 @@ public class QuestionServiceImpl implements QuestionService {
 //            questionDTO.setUser(user);
 //            questionDTOList.add(questionDTO);
 //        }
-        return questionDTOList;
+        return pagination;
     }
 }

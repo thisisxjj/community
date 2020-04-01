@@ -25,10 +25,14 @@ public interface UserMapper {
             "select " +
             "* " +
             "from user " +
-            "where id in " +
+            "<where> " +
+            "<if test='ids.size()>0'> " +
+            "id in " +
             "<foreach collection='ids' item='id' open='(' separator=',' close=')'>" +
             "#{id}" +
             "</foreach>" +
+            "</if> " +
+            "</where>" +
             "</script>")
     List<User> selectByIdSet(@Param("ids") Set<Integer> userIdSet);
 }
