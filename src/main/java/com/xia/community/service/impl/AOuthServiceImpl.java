@@ -7,7 +7,6 @@ import com.xia.community.model.User;
 import com.xia.community.provider.GitHubProvider;
 import com.xia.community.service.AOuthService;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.util.ArrayUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
@@ -33,7 +32,7 @@ public class AOuthServiceImpl implements AOuthService {
         // 进行存储session存储登录用户信息,登录成功写入user对象，登录失败写入null
 //        session.setAttribute("user", user);
         // 自己制作cookie用作身份识别，保证登录状态持久化保存
-        if (gitHubUser != null) {
+        if (gitHubUser != null && gitHubUser.getId() != null) {
             User user = User.builder()
                     .accountId(String.valueOf(gitHubUser.getId()))
                     .name(gitHubUser.getName())

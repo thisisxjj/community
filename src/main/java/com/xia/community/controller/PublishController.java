@@ -36,10 +36,26 @@ public class PublishController {
             @RequestParam(value = "tag",required = false) String tag,
             HttpServletRequest request,
             Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
+        if (title == null || title.length() == 0) {
+            model.addAttribute("error", "问题标题不能为空");
+            return "publish";
+        }
+        if (description == null || description.length() == 0) {
+            model.addAttribute("error", "问题补充不能为空");
+            return "publish";
+        }
+        if (tag == null || tag.length() == 0) {
+            model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
         Cookie[] cookies = request.getCookies();
         User user = aOuthService.loginCookie(cookies);
         if (user == null) {
             model.addAttribute("error", "您还未登录，请先登录");
+            return "publish";
         }
         // 如果是登录状态，则将发布的问题插入到数据库中
         publishService.create(title, description, tag, user);

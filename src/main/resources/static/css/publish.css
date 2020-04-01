@@ -8,3 +8,6 @@
     float: right;
     margin-bottom: 25px;
 }
+.alert-danger-text{
+    float: left;
+}
