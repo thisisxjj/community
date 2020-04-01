@@ -1,6 +1,6 @@
 github:
   clientId: a2e2d3b76a74c7df85a3
-  clientSecret: 202918e78bd5441bf0e247872be9c81a62f0e02d
+  clientSecret: 23d37c047d092a568cde224a3a8e6b43e451eb3e
   redirectUri: http://localhost:8080/callback
 spring:
   datasource:
@@ -8,3 +8,6 @@ spring:
     password: qwerty123456
     url: jdbc:mysql://localhost:3306/community
     driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

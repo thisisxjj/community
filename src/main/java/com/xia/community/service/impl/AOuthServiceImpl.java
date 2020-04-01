@@ -40,6 +40,7 @@ public class AOuthServiceImpl implements AOuthService {
                     .bio(gitHubUser.getBio())
                     .gmtCreate(System.currentTimeMillis())
                     .gmtModified(System.currentTimeMillis())
+                    .avatarUrl(gitHubUser.getAvatarUrl())
                     .build();
             // 将user对象持久化到数据库中
             int row = userMapper.insert(user);
@@ -63,7 +64,6 @@ public class AOuthServiceImpl implements AOuthService {
                     if (user != null) {
                         return user;
                     }
-
                 }
             }
         }
