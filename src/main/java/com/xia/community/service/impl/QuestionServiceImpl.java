@@ -26,11 +26,12 @@ public class QuestionServiceImpl implements QuestionService {
     private QuestionMapper questionMapper;
     @Resource
     private UserMapper userMapper;
+
     @Override
     public Pagination list(Integer pageNum, Integer pageSize) {
         pageNum = pageNum <= 1 ? 1 : pageNum;
         Integer totalCount = questionMapper.count();
-        Integer totalPage = totalCount % pageSize == 0 ? totalCount/pageSize : totalCount/pageSize + 1;
+        Integer totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
         totalPage = totalPage < 1 ? 1 : totalPage;
         pageNum = pageNum > totalPage ? totalPage : pageNum;
         // 起始索引
@@ -47,16 +48,16 @@ public class QuestionServiceImpl implements QuestionService {
             User user = userMap.get(question.getCreator());
             // 如果user 不等于空，则说明这个question的创建者就是这个user
             // 所以可以新建一个questionDTO对象,把question对象映射成questionDTO
-            if (user != null) {
-                QuestionDTO questionDTO = QuestionDTO
-                        .builder()
-                        .user(user)
-                        .build();
-                BeanUtils.copyProperties(question, questionDTO);
-                return questionDTO;
-            }
+//            if (user != null) {
+            QuestionDTO questionDTO = QuestionDTO
+                    .builder()
+                    .user(user)
+                    .build();
+            BeanUtils.copyProperties(question, questionDTO);
+            return questionDTO;
+//            }
             // 如果user等于空，则说明question没有创建者，直接返回空
-            return null;
+//            return null;
         }).collect(Collectors.toList());
         Pagination pagination = Pagination.builder().questionList(questionDTOList).build();
         pagination.setPagination(pageNum, pageSize, totalCount, totalPage);
@@ -69,6 +70,29 @@ public class QuestionServiceImpl implements QuestionService {
 //            questionDTO.setUser(user);
 //            questionDTOList.add(questionDTO);
 //        }
+        return pagination;
+    }
+
+    @Override
+    public Pagination list(User user, Integer pageNum, Integer pageSize) {
+        pageNum = pageNum <= 1 ? 1 : pageNum;
+        Integer totalCount = questionMapper.countByUser(user.getId());
+        Integer totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
+        totalPage = totalPage < 1 ? 1 : totalPage;
+        pageNum = pageNum > totalPage ? totalPage : pageNum;
+        // 起始索引
+        Integer offset = (pageNum - 1) * pageSize;
+        List<Question> questionList = questionMapper.listByUser(user.getId(), offset, pageSize);
+        // 将Question集合转换成QuestionDTO集合
+        List<QuestionDTO> questionDTOList = questionList.stream().map(question -> {
+            QuestionDTO questionDTO = QuestionDTO.builder()
+                    .user(user)
+                    .build();
+            BeanUtils.copyProperties(question, questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+        Pagination pagination = Pagination.builder().questionList(questionDTOList).build();
+        pagination.setPagination(pageNum, pageSize, totalCount, totalPage);
         return pagination;
     }
 }

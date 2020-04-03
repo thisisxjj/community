@@ -1,6 +1,7 @@
 package com.xia.community.service;
 
 import com.xia.community.dto.Pagination;
+import com.xia.community.model.User;
 
 /**
  * @author thisXjj
@@ -14,4 +15,6 @@ public interface QuestionService {
      * @param pageSize
      */
     Pagination list(Integer pageNum, Integer pageSize);
+
+    Pagination list(User user, Integer pageNum, Integer pageSize);
 }

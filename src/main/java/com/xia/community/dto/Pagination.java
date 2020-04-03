@@ -31,7 +31,7 @@ public class Pagination {
         this.totalCount = totalCount;
         // 如果totalCount模上pageSize 等于0 totalPage等于totalCount/pageSize
         this.totalPage = totalPage;
-        this.currentPage = pageNum <= this.totalPage ? pageNum : this.totalPage;
+        this.currentPage = pageNum;
         this.pageSize = pageSize;
         if (currentPage < this.totalPage) {
             if (totalCount < pageSize) {

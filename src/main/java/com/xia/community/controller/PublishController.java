@@ -26,7 +26,15 @@ public class PublishController {
     @Resource
     private PublishService publishService;
     @GetMapping
-    public String publish() {
+    public String publish(HttpServletRequest request,
+                          Model model) {
+        Cookie[] cookies = request.getCookies();
+        User user = aOuthService.loginCookie(cookies);
+        request.getSession().setAttribute("user", user);
+        if (user == null) {
+            model.addAttribute("error", "您还未登录，请先登录");
+            return "redirect:/";
+        }
         return "publish";
     }
     @PostMapping
@@ -55,7 +63,7 @@ public class PublishController {
         User user = aOuthService.loginCookie(cookies);
         if (user == null) {
             model.addAttribute("error", "您还未登录，请先登录");
-            return "publish";
+            return "redirect:/";
         }
         // 如果是登录状态，则将发布的问题插入到数据库中
         publishService.create(title, description, tag, user);
