@@ -1,7 +1,6 @@
 package com.xia.community.controller;
 
 import com.xia.community.model.User;
-import com.xia.community.service.AOuthService;
 import com.xia.community.service.PublishService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -22,19 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("publish")
 public class PublishController {
     @Resource
-    private AOuthService aOuthService;
-    @Resource
     private PublishService publishService;
     @GetMapping
-    public String publish(HttpServletRequest request,
-                          Model model) {
-        Cookie[] cookies = request.getCookies();
-        User user = aOuthService.loginCookie(cookies);
-        request.getSession().setAttribute("user", user);
-        if (user == null) {
-            model.addAttribute("error", "您还未登录，请先登录");
-            return "redirect:/";
-        }
+    public String publish() {
         return "publish";
     }
     @PostMapping
@@ -59,8 +47,7 @@ public class PublishController {
             model.addAttribute("error", "标签不能为空");
             return "publish";
         }
-        Cookie[] cookies = request.getCookies();
-        User user = aOuthService.loginCookie(cookies);
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             model.addAttribute("error", "您还未登录，请先登录");
             return "redirect:/";

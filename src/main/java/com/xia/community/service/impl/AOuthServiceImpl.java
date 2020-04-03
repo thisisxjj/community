@@ -9,7 +9,6 @@ import com.xia.community.service.AOuthService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
 import java.util.UUID;
 
 /**
@@ -52,21 +51,4 @@ public class AOuthServiceImpl implements AOuthService {
         return null;
     }
 
-    @Override
-    public User loginCookie(Cookie[] cookies) {
-        if (cookies != null && cookies.length > 0) {
-            for (Cookie cookie : cookies) {
-                // 判断cookie的key是否是token
-                if ("token".equals(cookie.getName())) {
-                    // 如果是token，查询数据库中是否含有cookie的value也就是数据库中的token字段的uuid
-                    User user = userMapper.selectByToken(cookie.getValue());
-                    // 判断user是否为null，如果为null，则判断没有登录过，需要登录
-                    if (user != null) {
-                        return user;
-                    }
-                }
-            }
-        }
-        return null;
-    }
 }
