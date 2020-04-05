@@ -37,18 +37,36 @@ public class AOuthServiceImpl implements AOuthService {
                     .name(gitHubUser.getName())
                     .token(UUID.randomUUID().toString())
                     .bio(gitHubUser.getBio())
-                    .gmtCreate(System.currentTimeMillis())
-                    .gmtModified(System.currentTimeMillis())
                     .avatarUrl(gitHubUser.getAvatarUrl())
                     .build();
             // 将user对象持久化到数据库中
-            int row = userMapper.insert(user);
+            Integer row = createOrUpdate(user);
             if (row <= 0) {
-                throw new RuntimeException("将user插入数据库失败");
+                throw new RuntimeException("将user插入数据库失败或更新数据库失败");
             }
             return user;
         }
         return null;
     }
+
+    private Integer createOrUpdate(User user) {
+        User dbUser = userMapper.selectByAccountId(Integer.valueOf(user.getAccountId()));
+        Integer row;
+        // 如果从数据库中查询的user不为空，则更新数据库的user
+        if (dbUser != null) {
+            dbUser.setAvatarUrl(user.getAvatarUrl());
+            dbUser.setBio(user.getBio());
+            dbUser.setName(user.getName());
+            dbUser.setToken(user.getToken());
+            dbUser.setGmtModified(System.currentTimeMillis());
+            row = userMapper.update(dbUser);
+        } else {
+            dbUser.setGmtCreate(System.currentTimeMillis());
+            dbUser.setGmtModified(System.currentTimeMillis());
+            row = userMapper.insert(user);
+        }
+        return row;
+    }
+
 
 }
