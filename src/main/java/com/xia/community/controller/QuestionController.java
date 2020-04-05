@@ -21,7 +21,7 @@ public class QuestionController {
     private QuestionService questionService;
     @GetMapping("question/{id}")
     public String question(@PathVariable("id") Integer id, HttpSession session, Model model) {
-        QuestionDTO question = questionService.detail(id);
+        QuestionDTO question = questionService.selectOne(id);
         if (question == null) {
             model.addAttribute("error", "您所查询的问题不存在");
             return "redirect:/";

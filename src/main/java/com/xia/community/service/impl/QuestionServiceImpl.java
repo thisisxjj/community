@@ -97,16 +97,38 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDTO detail(Integer id) {
+    public QuestionDTO selectOne(Integer id) {
         // 通过问题id查询问题
         Question question = questionMapper.selectById(id);
         if (question == null) {
-            return null;
+            throw new RuntimeException("该id无法查询到问题");
         }
         // 通过问题创建者id查询出这个问题的创建者
         User user = userMapper.selectById(question.getCreator());
         QuestionDTO questionDTO = QuestionDTO.builder().user(user).build();
         BeanUtils.copyProperties(question, questionDTO);
         return questionDTO;
+    }
+
+
+
+    @Override
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            // 创建问题
+            question.setGmtCreate(System.currentTimeMillis());
+            question.setGmtModified(System.currentTimeMillis());
+            Integer row = questionMapper.create(question);
+            if (row < 0) {
+                throw new RuntimeException("创建问题异常, 问题创建者：" + question.getCreator());
+            }
+        } else {
+            // 更新问题
+            question.setGmtModified(System.currentTimeMillis());
+            Integer row = questionMapper.update(question);
+            if (row < 0) {
+                throw new RuntimeException("更新问题异常, 问题创建者：" + question.getCreator());
+            }
+        }
     }
 }

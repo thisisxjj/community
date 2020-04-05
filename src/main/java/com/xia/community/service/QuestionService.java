@@ -2,6 +2,7 @@ package com.xia.community.service;
 
 import com.xia.community.dto.Pagination;
 import com.xia.community.dto.QuestionDTO;
+import com.xia.community.model.Question;
 import com.xia.community.model.User;
 
 /**
@@ -31,5 +32,11 @@ public interface QuestionService {
      * @param id
      * @return
      */
-    QuestionDTO detail(Integer id);
+    QuestionDTO selectOne(Integer id);
+
+    /**
+     * 创建或更新问题
+     * @param question
+     */
+    void createOrUpdate(Question question);
 }
