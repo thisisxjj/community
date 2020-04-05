@@ -10,7 +10,8 @@
 [Ok Http](https://square.github.io/okhttp/) 
 [Spring 文档](https://docs.spring.io/spring-boot/docs/2.1.13.RELEASE/reference/html/) 
 [菜鸟教程](https://www.runoob.com/) 
-[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+[Thymeleaf](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html) 
+[Spring mvc](https://docs.spring.io/spring/docs/5.1.14.RELEASE/spring-framework-reference/web.html#spring-web)
 ## 工具
 [Git](https://git-scm.com/downloads) 
 [Visual Paradigm](https://www.visual-paradigm.com) 

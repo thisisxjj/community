@@ -95,4 +95,18 @@ public class QuestionServiceImpl implements QuestionService {
         pagination.setPagination(pageNum, pageSize, totalCount, totalPage);
         return pagination;
     }
+
+    @Override
+    public QuestionDTO detail(Integer id) {
+        // 通过问题id查询问题
+        Question question = questionMapper.selectById(id);
+        if (question == null) {
+            return null;
+        }
+        // 通过问题创建者id查询出这个问题的创建者
+        User user = userMapper.selectById(question.getCreator());
+        QuestionDTO questionDTO = QuestionDTO.builder().user(user).build();
+        BeanUtils.copyProperties(question, questionDTO);
+        return questionDTO;
+    }
 }

@@ -1,6 +1,7 @@
 package com.xia.community.service;
 
 import com.xia.community.dto.Pagination;
+import com.xia.community.dto.QuestionDTO;
 import com.xia.community.model.User;
 
 /**
@@ -16,5 +17,19 @@ public interface QuestionService {
      */
     Pagination list(Integer pageNum, Integer pageSize);
 
+    /**
+     * 展示个人问题列表
+     * @param user
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     Pagination list(User user, Integer pageNum, Integer pageSize);
+
+    /**
+     * 展示问题细节
+     * @param id
+     * @return
+     */
+    QuestionDTO detail(Integer id);
 }
