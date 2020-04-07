@@ -22,10 +22,6 @@ public class QuestionController {
     @GetMapping("question/{id}")
     public String question(@PathVariable("id") Integer id, HttpSession session, Model model) {
         QuestionDTO question = questionService.selectOne(id);
-        if (question == null) {
-            model.addAttribute("error", "您所查询的问题不存在");
-            return "redirect:/";
-        }
         // 判断登录用户是否存在，并且登录用户是否是问题创建者
         User user = (User) session.getAttribute("user");
         if (user != null && user.getId().equals(question.getCreator())) {

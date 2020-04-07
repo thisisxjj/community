@@ -2,6 +2,8 @@ package com.xia.community.service.impl;
 
 import com.xia.community.dto.Pagination;
 import com.xia.community.dto.QuestionDTO;
+import com.xia.community.exception.CustomizeErrorCode;
+import com.xia.community.exception.QuestionException;
 import com.xia.community.mapper.QuestionMapper;
 import com.xia.community.mapper.UserMapper;
 import com.xia.community.model.Question;
@@ -101,7 +103,7 @@ public class QuestionServiceImpl implements QuestionService {
         // 通过问题id查询问题
         Question question = questionMapper.selectById(id);
         if (question == null) {
-            throw new RuntimeException("该id无法查询到问题");
+            throw new QuestionException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
         // 通过问题创建者id查询出这个问题的创建者
         User user = userMapper.selectById(question.getCreator());
@@ -119,15 +121,15 @@ public class QuestionServiceImpl implements QuestionService {
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(System.currentTimeMillis());
             Integer row = questionMapper.create(question);
-            if (row < 0) {
-                throw new RuntimeException("创建问题异常, 问题创建者：" + question.getCreator());
+            if (row < 1) {
+                throw new QuestionException(CustomizeErrorCode.QUESTION_CREATE_ERROR);
             }
         } else {
             // 更新问题
             question.setGmtModified(System.currentTimeMillis());
             Integer row = questionMapper.update(question);
-            if (row < 0) {
-                throw new RuntimeException("更新问题异常, 问题创建者：" + question.getCreator());
+            if (row < 1) {
+                throw new QuestionException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
     }

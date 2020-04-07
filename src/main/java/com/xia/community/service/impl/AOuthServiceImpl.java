@@ -2,6 +2,8 @@ package com.xia.community.service.impl;
 
 import com.xia.community.dto.AccessTokenDTO;
 import com.xia.community.dto.GitHubUser;
+import com.xia.community.exception.CustomizeErrorCode;
+import com.xia.community.exception.UserException;
 import com.xia.community.mapper.UserMapper;
 import com.xia.community.model.User;
 import com.xia.community.provider.GitHubProvider;
@@ -41,8 +43,8 @@ public class AOuthServiceImpl implements AOuthService {
                     .build();
             // 将user对象持久化到数据库中
             Integer row = createOrUpdate(user);
-            if (row <= 0) {
-                throw new RuntimeException("将user插入数据库失败或更新数据库失败");
+            if (row < 1) {
+                throw new UserException(CustomizeErrorCode.USER_CREATE_OR_UPDATE_ERROR);
             }
             return user;
         }
